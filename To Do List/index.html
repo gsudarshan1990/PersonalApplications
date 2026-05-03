@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To Do List</title>
+  <style>
+    :root {
+      --bg: #f7f3ea;
+      --card: #fffdf8;
+      --text: #1f2933;
+      --muted: #6b7280;
+      --accent: #c96c3a;
+      --accent-dark: #a95327;
+      --border: #eadfce;
+      --done: #2f855a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, #fff4db 0, transparent 30%),
+        linear-gradient(135deg, #f7f3ea, #efe5d5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .app {
+      width: min(100%, 720px);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(78, 55, 28, 0.12);
+      padding: 28px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+    }
+
+    .subtitle {
+      margin: 0 0 24px;
+      color: var(--muted);
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(201, 108, 58, 0.15);
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .add-btn {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .add-btn:hover {
+      background: var(--accent-dark);
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .summary-card {
+      background: #fff7ed;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .summary-card h2 {
+      margin: 0 0 6px;
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .summary-card p {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .task-left {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .task-text {
+      word-break: break-word;
+    }
+
+    .completed .task-text {
+      text-decoration: line-through;
+      color: var(--muted);
+    }
+
+    .task-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .small-btn {
+      padding: 10px 12px;
+      background: #f5efe5;
+      color: var(--text);
+    }
+
+    .delete-btn {
+      background: #fee2e2;
+      color: #b42318;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: var(--muted);
+      padding: 24px 12px 8px;
+    }
+
+    @media (max-width: 640px) {
+      .app {
+        padding: 20px;
+      }
+
+      .input-row,
+      .summary {
+        grid-template-columns: 1fr;
+      }
+
+      li {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .task-actions {
+        justify-content: flex-end;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <h1>To Do List</h1>
+    <p class="subtitle">Add tasks, mark them complete, and watch the summary update automatically.</p>
+
+    <div class="input-row">
+      <input id="taskInput" type="text" placeholder="Enter a new task">
+      <button class="add-btn" id="addTaskBtn">Add Task</button>
+    </div>
+
+    <section class="summary" aria-label="Task summary">
+      <div class="summary-card">
+        <h2>Total</h2>
+        <p id="totalTasks">0</p>
+      </div>
+      <div class="summary-card">
+        <h2>Completed</h2>
+        <p id="completedTasks">0</p>
+      </div>
+      <div class="summary-card">
+        <h2>Remaining</h2>
+        <p id="remainingTasks">0</p>
+      </div>
+    </section>
+
+    <ul id="taskList"></ul>
+    <p id="emptyState" class="empty-state">No tasks yet. Add your first to-do item.</p>
+  </main>
+
+  <script>
+    const taskInput = document.getElementById("taskInput");
+    const addTaskBtn = document.getElementById("addTaskBtn");
+    const taskList = document.getElementById("taskList");
+    const emptyState = document.getElementById("emptyState");
+    const totalTasks = document.getElementById("totalTasks");
+    const completedTasks = document.getElementById("completedTasks");
+    const remainingTasks = document.getElementById("remainingTasks");
+
+    const tasks = [];
+
+    function updateSummary() {
+      const total = tasks.length;
+      const completed = tasks.filter((task) => task.done).length;
+      const remaining = total - completed;
+
+      totalTasks.textContent = total;
+      completedTasks.textContent = completed;
+      remainingTasks.textContent = remaining;
+      emptyState.style.display = total === 0 ? "block" : "none";
+    }
+
+    function renderTasks() {
+      taskList.innerHTML = "";
+
+      tasks.forEach((task, index) => {
+        const listItem = document.createElement("li");
+        if (task.done) {
+          listItem.classList.add("completed");
+        }
+
+        const left = document.createElement("div");
+        left.className = "task-left";
+
+        const text = document.createElement("span");
+        text.className = "task-text";
+        text.textContent = task.text;
+
+        left.appendChild(text);
+
+        const actions = document.createElement("div");
+        actions.className = "task-actions";
+
+        const toggleButton = document.createElement("button");
+        toggleButton.className = "small-btn";
+        toggleButton.textContent = task.done ? "Undo" : "Done";
+        toggleButton.addEventListener("click", () => {
+          tasks[index].done = !tasks[index].done;
+          renderTasks();
+          updateSummary();
+        });
+
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "small-btn delete-btn";
+        deleteButton.textContent = "Delete";
+        deleteButton.addEventListener("click", () => {
+          tasks.splice(index, 1);
+          renderTasks();
+          updateSummary();
+        });
+
+        actions.appendChild(toggleButton);
+        actions.appendChild(deleteButton);
+
+        listItem.appendChild(left);
+        listItem.appendChild(actions);
+        taskList.appendChild(listItem);
+      });
+    }
+
+    function addTask() {
+      const value = taskInput.value.trim();
+      if (!value) {
+        taskInput.focus();
+        return;
+      }
+
+      tasks.push({ text: value, done: false });
+      taskInput.value = "";
+      renderTasks();
+      updateSummary();
+      taskInput.focus();
+    }
+
+    addTaskBtn.addEventListener("click", addTask);
+    taskInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        addTask();
+      }
+    });
+
+    updateSummary();
+  </script>
+</body>
+</html>
