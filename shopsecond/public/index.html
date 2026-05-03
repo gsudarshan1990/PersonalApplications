@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe Sharing - Share Your Favorite Recipes</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="container">
+        <div class="logo">🍳 RecipeShare</div>
+        <ul class="nav-links">
+          <li><a href="#home" onclick="showHome()">Home</a></li>
+          <li><a href="#recipes" onclick="showRecipes()">Recipes</a></li>
+          <li><a href="#add" onclick="showAddRecipe()">Add Recipe</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+      <div class="hero-content">
+        <h1>Welcome to RecipeShare</h1>
+        <p>Discover, share, and cook amazing recipes from around the world</p>
+        <button class="btn btn-primary" onclick="showRecipes()">Explore Recipes</button>
+      </div>
+    </section>
+
+    <!-- Recipes Grid Section -->
+    <section id="recipes" class="recipes-section" style="display: none;">
+      <div class="container">
+        <h2>Our Recipes</h2>
+        <div class="recipes-grid" id="recipesGrid">
+          <!-- Recipes will be loaded here -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Recipe Detail Modal -->
+    <div id="recipeModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close" onclick="closeRecipeModal()">&times;</span>
+        <div id="recipeDetails">
+          <!-- Recipe details will be loaded here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Recipe Section -->
+    <section id="add" class="add-recipe-section" style="display: none;">
+      <div class="container">
+        <h2>Add Your Recipe</h2>
+        <form id="recipeForm" class="recipe-form">
+          <div class="form-group">
+            <label for="title">Recipe Title</label>
+            <input type="text" id="title" name="title" required placeholder="Enter recipe name">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="category">Category</label>
+              <select id="category" name="category" required>
+                <option value="">Select a category</option>
+                <option value="Appetizer">Appetizer</option>
+                <option value="Main Course">Main Course</option>
+                <option value="Dessert">Dessert</option>
+                <option value="Salad">Salad</option>
+                <option value="Soup">Soup</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="prepTime">Prep Time</label>
+              <input type="text" id="prepTime" name="prepTime" required placeholder="e.g., 15 min">
+            </div>
+
+            <div class="form-group">
+              <label for="cookTime">Cook Time</label>
+              <input type="text" id="cookTime" name="cookTime" required placeholder="e.g., 30 min">
+            </div>
+
+            <div class="form-group">
+              <label for="servings">Servings</label>
+              <input type="text" id="servings" name="servings" required placeholder="e.g., 4">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="ingredients">Ingredients (one per line)</label>
+            <textarea id="ingredients" name="ingredients" rows="4" required placeholder="Enter ingredients, one per line"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="instructions">Instructions</label>
+            <textarea id="instructions" name="instructions" rows="6" required placeholder="Enter cooking instructions"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Add Recipe</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 RecipeShare. Share the joy of cooking!</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

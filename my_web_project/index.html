@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An interactive web demo showcasing JavaScript functionality">
+    <meta name="theme-color" content="#1a73e8">
+    <title>Interactive Web Project</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container" role="main">
+        <header>
+            <h1>Interactive Web Demo</h1>
+            <p class="subtitle">A showcase of JavaScript interactivity</p>
+        </header>
+
+        <main>
+            <section class="card">
+                <h2>Message Generator</h2>
+                <div class="input-group">
+                    <input type="text" id="nameInput" placeholder="Enter your name">
+                    <button onclick="showPersonalizedMessage()" class="btn primary">Greet Me</button>
+                </div>
+                <p id="message" class="message"></p>
+            </section>
+
+            <section class="card">
+                <h2>Color Changer</h2>
+                <div class="color-buttons">
+                    <button onclick="changeColor('red')" class="btn red">Red</button>
+                    <button onclick="changeColor('blue')" class="btn blue">Blue</button>
+                    <button onclick="changeColor('green')" class="btn green">Green</button>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>Counter</h2>
+                <div class="counter">
+                    <button onclick="decrementCounter()" class="btn">-</button>
+                    <span id="counterValue">0</span>
+                    <button onclick="incrementCounter()" class="btn">+</button>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Created with ❤️ using HTML, CSS, and JavaScript</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
