@@ -159,6 +159,11 @@ input {
   background: var(--panel-strong);
 }
 
+#quantityInput {
+  flex: 0 0 110px;
+  min-width: 110px;
+}
+
 .inventory-card {
   margin-bottom: 24px;
 }

@@ -15,6 +15,7 @@ const balanceDisplay = document.getElementById("balanceDisplay");
 const messageDisplay = document.getElementById("messageDisplay");
 const purchaseHistory = document.getElementById("purchaseHistory");
 const itemInput = document.getElementById("itemInput");
+const quantityInput = document.getElementById("quantityInput");
 const purchaseButton = document.getElementById("purchaseButton");
 const cancelButton = document.getElementById("cancelButton");
 const resetButton = document.getElementById("resetButton");
@@ -102,7 +103,7 @@ function renderPurchaseHistory() {
     .map((purchase) => {
       return `
         <li class="history-item">
-          <span class="history-name">${purchase.name}</span>
+          <span class="history-name">${purchase.quantity || 1} x ${purchase.name}</span>
           <span class="history-meta">${purchase.code} • ${formatCurrency(purchase.price)}</span>
         </li>
       `;
@@ -144,9 +145,15 @@ function findItem(selection) {
 function purchaseItem() {
   const selection = itemInput.value;
   const item = findItem(selection);
+  const quantity = Number.parseInt(quantityInput.value, 10);
 
   if (!selection.trim()) {
     setMessage("Enter an item code or number before purchasing.", "error");
+    return;
+  }
+
+  if (!Number.isInteger(quantity) || quantity <= 0) {
+    setMessage("Enter a valid quantity of at least 1.", "error");
     return;
   }
 
@@ -160,47 +167,76 @@ function purchaseItem() {
     return;
   }
 
-  if (state.balance < item.price) {
-    const shortfall = Number((item.price - state.balance).toFixed(2));
+  if (quantity > item.quantity) {
     setMessage(
-      `Insufficient balance for ${item.name}. Please add ${formatCurrency(shortfall)} more.`,
+      `Only ${item.quantity} unit(s) of ${item.name} are available. Please reduce the quantity.`,
       "error"
     );
     return;
   }
 
-  item.quantity -= 1;
-  state.balance = Number((state.balance - item.price).toFixed(2));
+  const totalPrice = Number((item.price * quantity).toFixed(2));
+
+  if (state.balance < totalPrice) {
+    const shortfall = Number((totalPrice - state.balance).toFixed(2));
+    setMessage(
+      `Insufficient balance for ${quantity} x ${item.name}. Please add ${formatCurrency(shortfall)} more.`,
+      "error"
+    );
+    return;
+  }
+
+  item.quantity -= quantity;
+  state.balance = Number((state.balance - totalPrice).toFixed(2));
   state.purchases.push({
     code: item.code,
     name: item.name,
-    price: item.price
+    price: totalPrice,
+    quantity
   });
   itemInput.value = "";
+  quantityInput.value = "1";
   syncUi();
 
   setMessage(
-    `Dispensing ${item.name}. Remaining balance: ${formatCurrency(state.balance)}.`,
+    `Dispensing ${quantity} x ${item.name}. Remaining balance: ${formatCurrency(state.balance)}.`,
     "success"
   );
 }
 
 function cancelTransaction() {
-  if (state.balance <= 0) {
-    setMessage("There is no balance to refund.", "info");
+  if (state.balance <= 0 && state.purchases.length === 0) {
+    setMessage("There is no balance or purchase to refund.", "info");
     return;
   }
 
-  const refund = state.balance;
-  state.balance = 0;
-  renderBalance();
-  saveState();
-  setMessage(`Transaction canceled. Refunded ${formatCurrency(refund)}.`, "success");
+  const purchaseRefund = state.purchases.reduce((total, purchase) => total + purchase.price, 0);
+  const totalRefund = Number((state.balance + purchaseRefund).toFixed(2));
+
+  state.purchases.forEach((purchase) => {
+    const item = state.items.find((product) => product.code === purchase.code);
+
+    if (item) {
+      item.quantity += purchase.quantity || 1;
+    }
+  });
+
+  state.balance = totalRefund;
+  state.purchases = [];
+  itemInput.value = "";
+  quantityInput.value = "1";
+  syncUi();
+
+  setMessage(
+    `Transaction canceled. ${formatCurrency(totalRefund)} has been restored to your balance and purchased items were returned to stock.`,
+    "success"
+  );
 }
 
 function resetMachine() {
   state = createDefaultState();
   itemInput.value = "";
+  quantityInput.value = "1";
   syncUi();
   setMessage("Machine reset to default inventory and zero balance.", "info");
 }
