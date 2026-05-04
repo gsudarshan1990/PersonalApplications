@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vending Machine</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="hero">
+      <p class="eyebrow">Static Web App</p>
+      <h1>Vending Machine Builder</h1>
+      <p class="intro">
+        Insert money, choose an item by code or number, and complete a purchase with
+        instant stock updates, change return, and refund support.
+      </p>
+    </section>
+
+    <section class="machine-panel">
+      <div class="status-card">
+        <h2>Balance</h2>
+        <p id="balanceDisplay" class="balance">₹0.00</p>
+        <div class="money-controls">
+          <button class="money-btn" data-amount="10">Insert ₹10</button>
+          <button class="money-btn" data-amount="20">Insert ₹20</button>
+          <button class="money-btn" data-amount="50">Insert ₹50</button>
+          <button class="money-btn" data-amount="100">Insert ₹100</button>
+        </div>
+      </div>
+
+      <div class="status-card">
+        <h2>Selection</h2>
+        <label for="itemInput" class="field-label">Enter item code or number</label>
+        <div class="selection-row">
+          <input id="itemInput" type="text" placeholder="Example: A1 or 1">
+          <button id="purchaseButton">Purchase</button>
+        </div>
+        <div class="action-row">
+          <button id="cancelButton" class="secondary">Cancel & Refund</button>
+          <button id="resetButton" class="ghost">Reset Machine</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="inventory-card">
+      <div class="card-header">
+        <h2>Available Items</h2>
+        <p>Prices and quantities update after every purchase.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Code</th>
+              <th>Item</th>
+              <th>Price</th>
+              <th>Remaining</th>
+            </tr>
+          </thead>
+          <tbody id="inventoryBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="message-card">
+      <h2>Machine Messages</h2>
+      <p id="messageDisplay" class="message info">Welcome. Insert money to begin.</p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
