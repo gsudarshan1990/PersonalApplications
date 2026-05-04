@@ -144,13 +144,13 @@ function purchaseItem() {
 
   item.quantity -= 1;
   state.balance = Number((state.balance - item.price).toFixed(2));
-  const change = state.balance;
-  state.balance = 0;
   itemInput.value = "";
   syncUi();
 
-  const changeText = change > 0 ? ` Change returned: ${formatCurrency(change)}.` : "";
-  setMessage(`Dispensing ${item.name}.${changeText}`, "success");
+  setMessage(
+    `Dispensing ${item.name}. Remaining balance: ${formatCurrency(state.balance)}.`,
+    "success"
+  );
 }
 
 function cancelTransaction() {
