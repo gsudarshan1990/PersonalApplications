@@ -13,6 +13,7 @@ const defaultItems = [
 const inventoryBody = document.getElementById("inventoryBody");
 const balanceDisplay = document.getElementById("balanceDisplay");
 const messageDisplay = document.getElementById("messageDisplay");
+const purchaseHistory = document.getElementById("purchaseHistory");
 const itemInput = document.getElementById("itemInput");
 const purchaseButton = document.getElementById("purchaseButton");
 const cancelButton = document.getElementById("cancelButton");
@@ -25,7 +26,8 @@ function createDefaultState() {
   return {
     version: CATALOG_VERSION,
     balance: 0,
-    items: structuredClone(defaultItems)
+    items: structuredClone(defaultItems),
+    purchases: []
   };
 }
 
@@ -41,6 +43,10 @@ function loadState() {
 
     if (parsedState.version !== CATALOG_VERSION) {
       return createDefaultState();
+    }
+
+    if (!Array.isArray(parsedState.purchases)) {
+      parsedState.purchases = [];
     }
 
     return parsedState;
@@ -84,6 +90,26 @@ function renderBalance() {
   balanceDisplay.textContent = formatCurrency(state.balance);
 }
 
+function renderPurchaseHistory() {
+  if (state.purchases.length === 0) {
+    purchaseHistory.innerHTML = '<li class="history-empty">No products purchased yet.</li>';
+    return;
+  }
+
+  purchaseHistory.innerHTML = state.purchases
+    .slice()
+    .reverse()
+    .map((purchase) => {
+      return `
+        <li class="history-item">
+          <span class="history-name">${purchase.name}</span>
+          <span class="history-meta">${purchase.code} • ${formatCurrency(purchase.price)}</span>
+        </li>
+      `;
+    })
+    .join("");
+}
+
 function setMessage(text, type = "info") {
   messageDisplay.textContent = text;
   messageDisplay.className = `message ${type}`;
@@ -92,6 +118,7 @@ function setMessage(text, type = "info") {
 function syncUi() {
   renderInventory();
   renderBalance();
+  renderPurchaseHistory();
   saveState();
 }
 
@@ -144,6 +171,11 @@ function purchaseItem() {
 
   item.quantity -= 1;
   state.balance = Number((state.balance - item.price).toFixed(2));
+  state.purchases.push({
+    code: item.code,
+    name: item.name,
+    price: item.price
+  });
   itemInput.value = "";
   syncUi();
 
