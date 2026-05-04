@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/PersonalApplications/static/css/main.0cc60e4d.css",
-    "main.js": "/PersonalApplications/static/js/main.50d4e7df.js",
-    "static/js/453.6d4bd874.chunk.js": "/PersonalApplications/static/js/453.6d4bd874.chunk.js",
-    "index.html": "/PersonalApplications/index.html",
-    "main.0cc60e4d.css.map": "/PersonalApplications/static/css/main.0cc60e4d.css.map",
-    "main.50d4e7df.js.map": "/PersonalApplications/static/js/main.50d4e7df.js.map",
-    "453.6d4bd874.chunk.js.map": "/PersonalApplications/static/js/453.6d4bd874.chunk.js.map"
+    "main.css": "/PersonalApplications/shop/static/css/main.84b93330.css",
+    "main.js": "/PersonalApplications/shop/static/js/main.5d4a29a3.js",
+    "static/js/453.cd71174f.chunk.js": "/PersonalApplications/shop/static/js/453.cd71174f.chunk.js",
+    "index.html": "/PersonalApplications/shop/index.html",
+    "main.84b93330.css.map": "/PersonalApplications/shop/static/css/main.84b93330.css.map",
+    "main.5d4a29a3.js.map": "/PersonalApplications/shop/static/js/main.5d4a29a3.js.map",
+    "453.cd71174f.chunk.js.map": "/PersonalApplications/shop/static/js/453.cd71174f.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0cc60e4d.css",
-    "static/js/main.50d4e7df.js"
+    "static/css/main.84b93330.css",
+    "static/js/main.5d4a29a3.js"
   ]
 }
