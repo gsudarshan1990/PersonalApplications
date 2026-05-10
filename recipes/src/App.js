@@ -196,7 +196,7 @@ function App() {
       <section className="hero-panel">
         <nav className="topbar">
           <div className="topbar-copy">
-            <h1>Shiva Food and Tiffings</h1>
+            <h1>Shiva Food and Tiffins</h1>
             <p className="title-tagline">Order flavorful South Indian meals and food favorites for busy days.</p>
           </div>
           <div className="cart-pill">
