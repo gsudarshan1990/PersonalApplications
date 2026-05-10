@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/PersonalApplications/recipes/static/css/main.48866a47.css",
+    "main.js": "/PersonalApplications/recipes/static/js/main.08f7598b.js",
+    "static/js/453.53e575e5.chunk.js": "/PersonalApplications/recipes/static/js/453.53e575e5.chunk.js",
+    "index.html": "/PersonalApplications/recipes/index.html",
+    "main.48866a47.css.map": "/PersonalApplications/recipes/static/css/main.48866a47.css.map",
+    "main.08f7598b.js.map": "/PersonalApplications/recipes/static/js/main.08f7598b.js.map",
+    "453.53e575e5.chunk.js.map": "/PersonalApplications/recipes/static/js/453.53e575e5.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.48866a47.css",
+    "static/js/main.08f7598b.js"
+  ]
+}
