@@ -285,7 +285,7 @@ function App() {
                 </div>
                 <div className="recipe-footer">
                   <strong>{formatPrice(recipe.price)}</strong>
-                  <button onClick={() => addToCart(recipe)}>Add to Order</button>
+                  <button onClick={() => addToCart(recipe)}>Order</button>
                 </div>
               </article>
             ))}
